@@ -1,0 +1,64 @@
+/*Basic Insert*/
+INSERT INTO [Towns]([Id], [Name])
+VALUES 
+(1, 'Sofia'),
+(2, 'Plovdiv'),
+(3, 'Varna')
+
+INSERT INTO [Minions]([Id], [Name], [Age], [TownId])
+VALUES
+(1, 'Kevin', 22, 1),
+(2, 'Bob', 15, 3),
+(3, 'Steward', NULL, 2)
+
+/*Create table People*/
+CREATE TABLE [People] (
+	[Id] INT IDENTITY PRIMARY KEY,
+	[Name] NVARCHAR(200) NOT NULL,
+	[Picture] VARBINARY(8000) NULL,
+	[Height] DECIMAL(5,2) NULL,       
+  [Weight] DECIMAL(5,2) NULL,        
+  [Gender] CHAR(1) NOT NULL CHECK (Gender IN ('m', 'f')),
+  [Birthdate] DATE NOT NULL,
+  [Biography] NVARCHAR(MAX) NULL
+);
+
+/*Create table Users*/
+CREATE TABLE [Users] (
+	[Id] BIGINT IDENTITY PRIMARY KEY,
+	[Username] VARCHAR(30) UNIQUE NOT NULL,
+	[Password] VARCHAR(26) NOT NULL,
+	[ProfilePicture] VARBINARY(8000),
+	[LastLoginTime] DATETIME,
+	[IsDeleted] CHAR(1) CHECK(IsDeleted IN ('t', 'f'))
+);
+
+/*Basic Select which includes all fields*/
+SELECT * FROM [Towns]
+SELECT * FROM [Departments]
+SELECT * FROM [Employees]
+
+/*Basic Select which includes all fields and Order them*/
+SELECT * FROM [Towns] ORDER BY [Name]
+SELECT * FROM [Departments] ORDER BY [Name]
+SELECT * FROM [Employees] ORDER BY [Salary] DESC
+
+/*Basic Select for fields*/
+SELECT [Name] FROM [Towns] ORDER BY [Name]
+SELECT [Name] FROM [Departments] ORDER BY [Name]
+SELECT [FirstName], [LastName], [JobTitle], [Salary] FROM [Employees] ORDER BY [Salary] DESC
+
+/*Increase Employee Salary*/
+UPDATE [Employees] SET [Salary] += [Salary] * 0.1
+SELECT [Salary] FROM [Employees]
+
+/*Decrease Tax Rate*/
+UPDATE [Payments] SET [TaxRate] -= [TaxRate] * 0.03
+SELECT [TaxRate]
+  FROM [Payments]
+
+/*Delete all records*/
+DELETE FROM [Occupancies] 
+
+
+
