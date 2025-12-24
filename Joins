@@ -236,3 +236,76 @@ RIGHT JOIN [Countries]
                AS [CurrencyUsageTempQuery] 
          )
       AS [CurrencyRankingTempQuery]
+
+/*Problem 16*/
+    SELECT COUNT(*)
+        AS [Count]
+      FROM [MountainsCountries]
+        AS [mc]
+      JOIN [Mountains]
+        AS [m]
+        ON [mc].[MountainId] = [m].[Id]
+RIGHT JOIN [Countries]
+        AS [c]
+        ON [mc].[CountryCode] = [c].[CountryCode]
+     WHERE [mc].[CountryCode] IS NULL
+  GROUP BY [m].[Id]
+
+/*Problem 17*/
+USE [Geography]
+
+SELECT TOP(5)
+       [c].[CountryName],
+       MAX([p].[Elevation])
+    AS [HighestPeakElevation],
+       MAX([r].[Length])
+    AS [LongestRiverLength]
+  FROM [MountainsCountries]
+    AS [mc]
+  JOIN [Countries]
+    AS [c]
+    ON [mc].[CountryCode] = [c].[CountryCode]
+  JOIN [Mountains]
+    AS [m]
+    ON [mc].[MountainId] = [m].[Id]
+  JOIN [Peaks]
+    AS [p]
+    ON [m].[Id] = [p].[MountainId]
+  JOIN [CountriesRivers]
+    AS [cr]
+    ON [c].[CountryCode] = [cr].[CountryCode]
+  JOIN [Rivers]
+    AS [r]
+    ON [cr].[RiverId] = [r].[Id]
+GROUP BY [c].[CountryName]
+ORDER BY [HighestPeakElevation] DESC, 
+         [LongestRiverLength] DESC,
+         [CountryName] 
+
+/*Problem 18*/
+    SELECT TOP(5)
+           [c].[CountryName],
+           CASE
+                WHEN [p].[PeakName] IS NULL THEN '(no highest peak)'
+                ELSE [p].[PeakName]
+            END AS [Highest Peak Name],
+            CASE
+                WHEN [p].[Elevation] IS NULL THEN 0
+                ELSE [p].[Elevation]
+            END AS [Highest Peak Elevation],
+            CASE
+                WHEN [m].[MountainRange] IS NULL THEN '(no mountain)'
+                ELSE [m].[MountainRange]
+            END AS [Mountain]
+      FROM [MountainsCountries]
+        AS [mc]
+RIGHT JOIN [Countries]
+        AS [c]
+        ON [mc].[CountryCode] = [c].[CountryCode]
+ LEFT JOIN [Mountains]
+        AS [m]
+        ON [mc].[MountainId] = [m].[Id]
+ LEFT JOIN [Peaks]
+        AS [p]
+        ON [m].[Id] = [p].[MountainId]
+  ORDER BY [c].[CountryName]
