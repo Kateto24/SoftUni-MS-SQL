@@ -218,8 +218,10 @@ RIGHT JOIN [Countries]
   ORDER BY [c].[CountryName]
 
  /*Problem 15*/
- SELECT *
-   FROM (
+  SELECT [ContinentCode],
+         [CurrencyCode],
+         [CurrencyUsage]
+    FROM (
            SELECT *,
                   DENSE_RANK() OVER(PARTITION BY [ContinentCode] ORDER BY [CurrencyUsage] DESC)
                AS [CurrrencyRank]
@@ -236,6 +238,8 @@ RIGHT JOIN [Countries]
                AS [CurrencyUsageTempQuery] 
          )
       AS [CurrencyRankingTempQuery]
+   WHERE [CurrrencyRank] = 1     
+ORDER BY [ContinentCode]
 
 /*Problem 16*/
     SELECT COUNT(*)
